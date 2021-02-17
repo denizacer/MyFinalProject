@@ -31,7 +31,7 @@ namespace WebAPI.Controllers
             
                 //IProductService productService=new ProductManager(new EfProductDal());
                 
-                 var result = _productService.GetAll();
+                 var result = _productService.GetAll(); 
             if(result.Success)
             {
                 return Ok(result);
