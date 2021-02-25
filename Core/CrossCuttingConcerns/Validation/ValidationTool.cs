@@ -6,7 +6,8 @@ using System.Text;
 namespace Core.CrossCuttingConcerns.Validation
 {
     public class ValidationTool
-    {
+    {//doğrulamanın oolacağı class, doğrulanacak şey
+        //IProductdal,product gibi
         public static void Validate(IValidator validator,object entity)
         {
             var context = new ValidationContext<object>(entity);
