@@ -1,5 +1,7 @@
 using Business.Abstract;
 using Business.Concrete;
+using Core.DependencyResolvers;
+using Core.Extensions;
 using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
@@ -38,10 +40,8 @@ namespace WebAPI
             //Autofac,ninject,castlewinsor,structuremap,lightýnject,dryýnject->IoC container
             //AOP
             services.AddControllers();
-            //services.AddSingleton<IProductService,ProductManager>();//arkaplanda bir ref oluþtur
-            ////constracterda IProductService isterse product ma
-            //services.AddSingleton<IProductDal, EfProductDal>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();//ekledim
+                     
+           
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -57,8 +57,10 @@ namespace WebAPI
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                     };
-                });//ekledim
-            ServiceTool.Create(services);
+                });
+            services.AddDependencyResolvers(new ICoreModule[] { 
+                new CoreModule()
+            }); //ekledi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,7 +75,7 @@ namespace WebAPI
 
             app.UseRouting();
 
-            app.UseAuthentication();//ekledim
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
